@@ -1,0 +1,19 @@
+meta {
+  name: hello endpoint
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8081/hello
+}
+
+tests {
+  test("Status is 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response contains expected message", function () {
+    expect(res.body.message).to.equal("Hello");
+  });
+}
