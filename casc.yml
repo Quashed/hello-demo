@@ -1,0 +1,71 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: ${JENKINS_ADMIN_ID}
+          password: ${JENKINS_ADMIN_PASSWORD}
+
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+  nodes:
+    - permanent:
+        name: "built-in"
+        labelString: "built-in"
+
+jobs:
+  - script: >
+      pipelineJob('hello-demo') {
+        definition {
+          cps {
+            script('''
+              pipeline {
+                agent none
+                stages {
+                  stage("Clone Hello demo Repo") {
+                    agent {
+                      docker {
+                        image "maven:3.9.9-eclipse-temurin-21"
+                        args "-v /var/jenkins_home/.m2:/root/.m2"
+                      }
+                    }
+                    steps {
+                      git branch: "brandon-branch",
+                          url: "https://github.com/Quashed/hello-demo.git"
+                    }
+                  }
+                  stage("Clean Build & Test") {
+                    agent {
+                      docker {
+                        image "maven:3.9.9-eclipse-temurin-21"
+                        args "-v /var/jenkins_home/.m2:/root/.m2"
+                      }
+                    }
+                    steps {
+                      sh "mvn clean package -DskipTests"
+                    }
+                  }
+                  stage("Build Docker Image") {
+                    agent { label "built-in" }
+                    steps {
+                      sh "docker build -t hello-demo:latest ."
+                    }
+                  }
+                  stage("Run Application") {
+                    agent { label "built-in" }
+                    steps {
+                      sh """
+                        docker rm -f hello-demo-app || true
+                        docker run -d -p 8081:8081 --name hello-demo-app hello-demo:latest
+                      """
+                    }
+                  }
+                }
+              }
+            ''')
+            sandbox(true)
+          }
+        }
+      }

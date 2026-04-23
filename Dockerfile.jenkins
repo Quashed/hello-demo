@@ -1,0 +1,24 @@
+FROM jenkins/jenkins:lts
+USER root
+
+# Install Docker CLI
+RUN apt-get update && apt-get install -y docker.io
+
+# Install plugins
+COPY plugins.txt /usr/share/jenkins/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/plugins.txt
+
+# Copy JCasC config
+COPY casc.yml /var/jenkins_home/casc.yml
+
+# Copy init groovy scripts
+COPY init.groovy.d/ /var/jenkins_home/init.groovy.d/
+
+# Tell Jenkins where the JCasC file is
+ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
+
+# Skip the setup wizard
+ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
+
+RUN usermod -aG docker jenkins
+USER jenkins
