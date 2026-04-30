@@ -7,7 +7,7 @@ pipelineJob('hello-demo-single') {
                         url('https://github.com/Quashed/hello-demo.git')
 //                        credentials('github-credentials-id')
                     }
-                    branches('main')
+                    branch('*/main')
                 }
             }
             scriptPath('Jenkinsfile')
