@@ -29,11 +29,11 @@ pipeline {
             }
         }
 
-        stage('Smoke Test') {
+        stage('Bruno API Tests') {
             steps {
                 sh '''
                     sleep 10
-                    curl -f http://host.docker.internal:8081/hello
+                    npx @usebruno/cli run bruno
                 '''
             }
         }
