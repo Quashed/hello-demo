@@ -7,3 +7,11 @@ docker-workflow
 blueocean
 pipeline-stage-view
 credentials
+
+scm-api:latest
+branch-api:latest
+github:latest
+github-api:latest
+workflow-multibranch:latest
+ssh-credentials:latest
+display-url-api:latest

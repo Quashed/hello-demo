@@ -2,28 +2,15 @@ multibranchPipelineJob('hello-demo') {
     branchSources {
         branchSource {
             source {
-                git {
+                github {
                     id('hello-demo-id')
-                    remote('https://github.com/Quashed/hello-demo.git')
+                    repoOwner('Quashed')
+                    repository('hello-demo')
                     traits {
                         gitBranchDiscovery()
                     }
                 }
             }
-
-//            strategy {
-//                defaultBranchPropertyStrategy {
-//                    props {
-////                        noTriggerBranchProperty()
-//                    }
-//                }
-//            }
-        }
-    }
-
-    triggers {
-        periodicFolderTrigger {
-            interval('1h')
         }
     }
 
