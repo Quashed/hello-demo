@@ -12,5 +12,15 @@ jenkins:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
 
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "dockerhub-creds"
+              username: "quashed"
+              password: "${DOCKERHUB_TOKEN}"
+              description: "Docker Hub credentials"
+
 jobs:
   - file: /usr/share/jenkins/ref/job-dsl/hello-demo-multibranch-pipeline.groovy

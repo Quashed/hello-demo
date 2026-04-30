@@ -16,7 +16,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t hello-demo-api:latest ./app'
+                sh '''
+                    docker build -t quashed/hello-demo-api:${BUILD_NUMBER} ./app
+                    docker tag quashed/hello-demo-api:${BUILD_NUMBER} quashed/hello-demo-api:latest
+                '''
             }
         }
 
@@ -24,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                     docker rm -f hello-demo-api || true
-                    docker run -d --name hello-demo-api -p 8081:8081 hello-demo-api:latest
+                    docker run -d --name hello-demo-api -p 8081:8081 quashed/hello-demo-api:${BUILD_NUMBER}
                 '''
             }
         }
@@ -36,6 +39,22 @@ pipeline {
                     cd bruno
                     npx @usebruno/cli run .
                 '''
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push quashed/hello-demo-api:${BUILD_NUMBER}
+                        docker push quashed/hello-demo-api:latest
+                    '''
+                }
             }
         }
     }
