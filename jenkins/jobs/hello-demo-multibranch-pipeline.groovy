@@ -3,19 +3,16 @@ multibranchPipelineJob('hello-demo') {
         branchSource {
             source {
                 github {
-                    id('hello-demo-id')
+                    id('hello-demo-github')
                     repoOwner('Quashed')
                     repository('hello-demo')
-                    traits {
-                        gitBranchDiscovery()
-                    }
-                }
-            }
+                    configuredByUrl(false)
 
-            buildStrategies {
-                buildRegularBranches()
-                buildChangeRequests {
-                    ignoreTargetOnlyChanges(true)
+                    traits {
+                        gitHubBranchDiscovery {
+                            strategyId(1)
+                        }
+                    }
                 }
             }
         }
@@ -29,7 +26,13 @@ multibranchPipelineJob('hello-demo') {
 
     triggers {
         periodicFolderTrigger {
-            interval('1h')
+            interval('1m')
+        }
+    }
+
+    orphanedItemStrategy {
+        discardOldItems {
+            numToKeep(10)
         }
     }
 }
