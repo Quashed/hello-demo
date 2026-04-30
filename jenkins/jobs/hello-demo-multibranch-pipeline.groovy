@@ -1,28 +1,21 @@
 multibranchPipelineJob('hello-demo') {
-    description('Multibranch pipeline for hello-demo Spring Boot API')
-
     branchSources {
         branchSource {
             source {
-                github {
-                    id('hello-demo-github-source')
-                    repoOwner('Quashed')
-                    repository('hello-demo')
-                    configuredByUrl(false)
+                git {
+                    id('hello-demo-id')
+                    remote('https://github.com/Quashed/hello-demo.git')
+                    traits {
+                        gitBranchDiscovery() // This is the magic line
+                    }
                 }
             }
         }
     }
-
+    // This tells Jenkins where to look for the build steps
     factory {
         workflowBranchProjectFactory {
             scriptPath('Jenkinsfile')
-        }
-    }
-
-    orphanedItemStrategy {
-        discardOldItems {
-            numToKeep(10)
         }
     }
 }

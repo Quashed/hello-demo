@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Configured via JCasC"
+  systemMessage: "Jenkins configured using JCasC"
 
   securityRealm:
     local:
@@ -11,3 +11,6 @@ jenkins:
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
+
+jobs:
+  - file: /usr/share/jenkins/ref/job-dsl/hello-demo-multibranch-pipeline.groovy
