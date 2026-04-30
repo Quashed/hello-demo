@@ -5,3 +5,4 @@ github-branch-source
 job-dsl
 docker-workflow
 blueocean
+pipeline-stage-view

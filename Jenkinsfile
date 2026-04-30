@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh '''
                     docker rm -f hello-demo-api || true
-                    docker run -d --name hello-demo-api -p 8081:8080 hello-demo-api:latest
+                    docker run -d --name hello-demo-api -p 8081:8081 hello-demo-api:latest
                 '''
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh '''
                     sleep 10
-                    curl -f http://localhost:8081/hello
+                    curl -f http://host.docker.internal:8081/hello
                 '''
             }
         }
