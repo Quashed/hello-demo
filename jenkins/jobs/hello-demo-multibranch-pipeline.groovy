@@ -12,6 +12,7 @@ multibranchPipelineJob('hello-demo') {
                         gitHubBranchDiscovery {
                             strategyId(1)
                         }
+                        gitHubPushTrigger()
                     }
                 }
             }
