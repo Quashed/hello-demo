@@ -7,7 +7,7 @@ docker-workflow
 blueocean
 pipeline-stage-view
 credentials
-
+multibranch-build-strategy-extensions
 scm-api:latest
 branch-api:latest
 github:latest
