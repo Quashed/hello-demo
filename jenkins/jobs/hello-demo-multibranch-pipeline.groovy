@@ -6,16 +6,36 @@ multibranchPipelineJob('hello-demo') {
                     id('hello-demo-id')
                     remote('https://github.com/Quashed/hello-demo.git')
                     traits {
-                        gitBranchDiscovery() // This is the magic line
+                        gitBranchDiscovery()
+                    }
+                }
+            }
+
+            strategy {
+                defaultBranchPropertyStrategy {
+                    props {
+                        noTriggerBranchProperty()
                     }
                 }
             }
         }
     }
-    // This tells Jenkins where to look for the build steps
+
+    triggers {
+        periodicFolderTrigger {
+            interval('1h')
+        }
+    }
+
     factory {
         workflowBranchProjectFactory {
             scriptPath('Jenkinsfile')
+        }
+    }
+
+    orphanedItemStrategy {
+        discardOldItems {
+            numToKeep(10)
         }
     }
 }
