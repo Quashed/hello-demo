@@ -10,6 +10,14 @@ multibranchPipelineJob('hello-demo') {
                     }
                 }
             }
+
+//            strategy {
+//                defaultBranchPropertyStrategy {
+//                    props {
+////                        noTriggerBranchProperty()
+//                    }
+//                }
+//            }
         }
     }
 
