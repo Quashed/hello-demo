@@ -6,17 +6,8 @@ multibranchPipelineJob('hello-demo') {
                     id('hello-demo-id')
                     repoOwner('Quashed')
                     repository('hello-demo')
-//                    scanCredentialsId('github')
                     traits {
                         gitBranchDiscovery()
-                    }
-                }
-            }
-
-            strategy {
-                defaultBranchPropertyStrategy {
-                    props {
-                        noTriggerBranchProperty()
                     }
                 }
             }
@@ -30,21 +21,15 @@ multibranchPipelineJob('hello-demo') {
         }
     }
 
-    triggers {
-        periodicFolderTrigger {
-            interval('1h')
-        }
-    }
-
     factory {
         workflowBranchProjectFactory {
             scriptPath('Jenkinsfile')
         }
     }
 
-    orphanedItemStrategy {
-        discardOldItems {
-            numToKeep(10)
+    triggers {
+        periodicFolderTrigger {
+            interval('1h')
         }
     }
 }
