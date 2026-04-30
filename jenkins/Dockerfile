@@ -2,15 +2,11 @@ FROM jenkins/jenkins:lts-jdk21
 
 USER root
 
-# Install Docker CLI
 RUN apt-get update && \
-    apt-get install -y docker.io && \
+    apt-get install -y docker.io curl gnupg && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
-
-# Add jenkins user to docker group
-RUN usermod -aG docker jenkins
-
-USER jenkins
 
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 ENV CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yaml

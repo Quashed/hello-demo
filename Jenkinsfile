@@ -33,7 +33,8 @@ pipeline {
             steps {
                 sh '''
                     sleep 10
-                    npx @usebruno/cli run bruno
+                    cd bruno
+                    npx @usebruno/cli run .
                 '''
             }
         }
