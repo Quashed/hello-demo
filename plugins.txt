@@ -1,6 +1,0 @@
-git
-docker-workflow
-docker-plugin
-configuration-as-code
-job-dsl
-workflow-aggregator
