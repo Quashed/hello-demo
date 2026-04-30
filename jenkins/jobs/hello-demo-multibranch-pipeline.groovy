@@ -1,39 +1,24 @@
-multibranchPipelineJob('hello-demo') {
-    branchSources {
-        branchSource {
-            source {
-                github {
-                    id('hello-demo-github')
-                    repoOwner('Quashed')
-                    repository('hello-demo')
-                    configuredByUrl(false)
-
-                    traits {
-                        gitHubBranchDiscovery {
-                            strategyId(1)
-                        }
-                        gitHubPushTrigger()
+pipelineJob('hello-demo-single') {
+    definition {
+        cpsScm {
+            scm {
+                git {
+                    remote {
+                        url('https://github.com/Quashed/hello-demo.git')
+//                        credentials('github-credentials-id')
                     }
+                    branches('main')
                 }
             }
-        }
-    }
-
-    factory {
-        workflowBranchProjectFactory {
             scriptPath('Jenkinsfile')
         }
     }
 
     triggers {
-        periodicFolderTrigger {
-            interval('1m')
-        }
+        githubPush()
     }
 
-    orphanedItemStrategy {
-        discardOldItems {
-            numToKeep(10)
-        }
+    logRotator {
+        numToKeep(10)
     }
 }
