@@ -1,9 +1,14 @@
-git
-github
-github-branch-source
+configuration-as-code
+job-dsl
 
 workflow-aggregator
 workflow-multibranch
+
+git
+github
+github-api
+github-branch-source
+
 branch-api
 scm-api
 
@@ -11,4 +16,7 @@ credentials
 ssh-credentials
 
 pipeline-stage-view
+blueocean
 display-url-api
+
+docker-workflow
