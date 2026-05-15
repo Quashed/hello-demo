@@ -1,39 +1,3 @@
-// pipeline {
-//     agent any
-//
-//     stages {
-//         stage('Maven Build & Test') {
-//             steps {
-//                 dir('app') {
-//                     sh './mvnw clean package'
-//                 }
-//             }
-//         }
-//
-//         stage('Build Docker Image') {
-//             steps {
-//                 sh 'docker build -t hello-demo-api ./app'
-//             }
-//         }
-//
-//         stage('Integration Tests (Bruno)') {
-//             steps {
-//                 sh '''
-//                     docker rm -f hello-demo-api || true
-//                     docker run -d --name hello-demo-api -p 8081:8081 hello-demo-api
-//                     sleep 10
-//                     cd bruno && npx @usebruno/cli run .
-//                 '''
-//             }
-//         }
-//     }
-//
-//     post {
-//         always {
-//             sh 'docker rm -f hello-demo-api || true'
-//         }
-//     }
-// }
 pipeline {
     agent {
         kubernetes {
@@ -63,6 +27,20 @@ spec:
                 container('maven') {
                     dir('app') {
                         sh './mvnw clean package'
+                    }
+                }
+            }
+        }
+
+        stage('Start Spring Boot App') {
+            steps {
+                container('maven') {
+                    dir('app') {
+                        sh '''
+                            nohup java -jar target/*.jar > app.log 2>&1 &
+                            sleep 10
+                            cat app.log
+                        '''
                     }
                 }
             }

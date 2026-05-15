@@ -4,6 +4,7 @@ multibranchPipelineJob('hello-demo') {
             id('hello-demo-github')
             repoOwner('Quashed')
             repository('hello-demo')
+            scanCredentialsId('github-creds')
         }
     }
 

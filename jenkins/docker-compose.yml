@@ -1,8 +1,9 @@
 services:
   jenkins:
-    build: .
-    user: root
-    container_name: hello-demo-jenkins
+    build: . # build it using the Dockerfile in this folder
+    user: root # run jenkins as root
+    container_name: hello-demo-jenkins # name the container
+    image: hello-demo-jenkins:latest
     ports:
       - "8085:8080"
       - "50000:50000"
@@ -10,7 +11,7 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
 
-volumes:
+volumes: # persist jenkins data
   jenkins_home:
